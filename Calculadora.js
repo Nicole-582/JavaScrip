@@ -17,6 +17,7 @@ function limpiar() {
 }
 
 function retroceder() {
+  const pantalla=document.getElementById('pantalla');
   operacion = operacion.slice(0, -1);
   pantalla.textContent = operacion || '0';
 }
@@ -34,3 +35,6 @@ function calcular() {
 
 
 module.exports=calcular;
+module.exports= agregar;
+module.exports=limpiar;
+module.exports=retroceder;
