@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora Neón Verde Suave</title>
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0b0c0d;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+
+    .calculadora {
+      width: 320px;
+      background: #121416;
+      border-radius: 25px;
+      box-shadow:
+        0 0 20px rgba(56, 179, 108, 0.7),
+        inset 0 0 15px rgba(56, 179, 108, 0.3);
+      padding: 30px 28px;
+      display: flex;
+      flex-direction: column;
+      filter: drop-shadow(0 0 10px rgba(56, 179, 108, 0.7));
+    }
+
+    .pantalla {
+      background: #1b1e20;
+      border-radius: 18px;
+      box-shadow:
+        inset 0 0 12px rgba(56, 179, 108, 0.5),
+        0 0 15px rgba(56, 179, 108, 0.7);
+      height: 60px;
+      padding: 0 20px;
+      font-size: 2.2rem;
+      color: #38b36c;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      margin-bottom: 30px;
+      overflow-x: auto;
+      font-feature-settings: "tnum";
+      font-variant-numeric: tabular-nums;
+      user-select: text;
+      text-shadow:
+        0 0 4px rgba(56, 179, 108, 0.9),
+        0 0 8px rgba(56, 179, 108, 0.8);
+    }
+
+    .pantalla::-webkit-scrollbar {
+      height: 6px;
+    }
+    .pantalla::-webkit-scrollbar-thumb {
+      background-color: rgba(56, 179, 108, 0.7);
+      border-radius: 10px;
+      box-shadow:
+        0 0 6px rgba(56, 179, 108, 0.7);
+    }
+
+    .teclas {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    button {
+      background: #171b1e;
+      border-radius: 14px;
+      border: 1.5px solid rgba(56, 179, 108, 0.6);
+      padding: 20px 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #38b36c;
+      cursor: pointer;
+      transition:
+        background-color 0.25s ease,
+        box-shadow 0.2s ease,
+        transform 0.15s ease,
+        border-color 0.3s ease;
+      user-select: none;
+      text-shadow:
+        0 0 3px rgba(56, 179, 108, 0.8),
+        0 0 6px rgba(56, 179, 108, 0.6);
+      box-shadow:
+        0 0 7px rgba(56, 179, 108, 0.7),
+        inset 0 0 10px rgba(56, 179, 108, 0.35);
+    }
+
+    button:focus {
+      outline: none;
+      box-shadow:
+        0 0 10px 3px rgba(56, 179, 108, 0.9),
+        inset 0 0 12px rgba(56, 179, 108, 0.6);
+      border-color: #2ea84f;
+      color: #a1d9a2;
+      text-shadow:
+        0 0 7px #2ea84f,
+        0 0 15px #2ea84f;
+    }
+
+    button:hover {
+      background-color: #2a352d;
+      border-color: #4dd36d;
+      box-shadow:
+        0 0 15px #4dd36d,
+        inset 0 0 15px #63e082;
+      color: #b9f1b5;
+      text-shadow:
+        0 0 9px #4dd36d,
+        0 0 20px #75eb99;
+      transform: translateY(-1.5px) scale(1.04);
+    }
+
+    button:active {
+      box-shadow:
+        inset 0 0 12px #238a33,
+        inset 0 0 28px #36b94b;
+      transform: translateY(2px);
+      color: #91d275;
+      background-color: #1e2a1f;
+      border-color: #238a33;
+      text-shadow:
+        0 0 7px #238a33,
+        0 0 15px #36b94b;
+    }
+
+    /* Operadores */
+    .btn-operador {
+      border-color: rgba(56, 179, 108, 0.85);
+      color: #3cbf6d;
+      box-shadow:
+        0 0 14px #3cbf6d,
+        inset 0 0 22px #27a84e;
+      background: #121916;
+      font-weight: 700;
+      text-shadow:
+        0 0 5px #3cbf6d,
+        0 0 12px #2ca75d;
+    }
+    .btn-operador:hover {
+      background-color: #24482b;
+      border-color: #5be67a;
+      box-shadow:
+        0 0 20px #5be67a,
+        inset 0 0 26px #64f37a;
+      color: #b2f2b2;
+      text-shadow:
+        0 0 12px #5be67a,
+        0 0 28px #73f687;
+    }
+    .btn-operador:active {
+      box-shadow:
+        inset 0 0 20px #2f8a38,
+        inset 0 0 38px #3cc04a;
+      background-color: #16381f;
+      border-color: #2f8a38;
+      color: #88bd8e;
+      text-shadow:
+        0 0 10px #2f8a38,
+        0 0 22px #33a54e;
+    }
+
+    /* Botón igual */
+    .btn-igual {
+      grid-column: span 2;
+      background: #38b36c;
+      color: #122e10;
+      font-weight: 700;
+      border: 1.5px solid #38b36c;
+      box-shadow:
+        0 0 22px #38b36c,
+        inset 0 0 30px #71db8f;
+      text-shadow:
+        0 0 8px #38b36c,
+        0 0 20px #38b36c;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .btn-igual:hover {
+      background-color: #55d87e;
+      box-shadow:
+        0 0 30px #55d87e,
+        inset 0 0 40px #8bf2a2;
+      color: #193e13;
+      text-shadow:
+        0 0 12px #55d87e,
+        0 0 28px #77e4a3;
+    }
+    .btn-igual:active {
+      box-shadow:
+        inset 0 0 26px #2b6f27,
+        inset 0 0 48px #3c9c36;
+      background-color: #2a5e21;
+      color: #112809;
+      text-shadow:
+        0 0 10px #2b6f27,
+        0 0 25px #3c9c36;
+      transform: translateY(2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="calculadora" role="application" aria-label="Calculadora neón verde suave">
+    <div class="pantalla" id="pantalla" aria-live="polite" aria-atomic="true">0</div>
+    <div class="teclas">
+      <button type="button" aria-label="Limpiar" onclick="limpiar()">C</button>
+      <button type="button" aria-label="Borrar último" onclick="retroceder()">⌫</button>
+      <button type="button" aria-label="Porcentaje" onclick="agregar('%')">%</button>
+      <button type="button" class="btn-operador" aria-label="División" onclick="agregar('/')">÷</button>
+
+      <button type="button" aria-label="Siete" onclick="agregar('7')">7</button>
+      <button type="button" aria-label="Ocho" onclick="agregar('8')">8</button>
+      <button type="button" aria-label="Nueve" onclick="agregar('9')">9</button>
+      <button type="button" class="btn-operador" aria-label="Multiplicación" onclick="agregar('*')">×</button>
+
+      <button type="button" aria-label="Cuatro" onclick="agregar('4')">4</button>
+      <button type="button" aria-label="Cinco" onclick="agregar('5')">5</button>
+      <button type="button" aria-label="Seis" onclick="agregar('6')">6</button>
+      <button type="button" class="btn-operador" aria-label="Resta" onclick="agregar('-')">−</button>
+
+      <button type="button" aria-label="Uno" onclick="agregar('1')">1</button>
+      <button type="button" aria-label="Dos" onclick="agregar('2')">2</button>
+      <button type="button" aria-label="Tres" onclick="agregar('3')">3</button>
+      <button type="button" class="btn-operador" aria-label="Suma" onclick="agregar('+')">+</button>
+
+      <button type="button" aria-label="Cero" onclick="agregar('0')">0</button>
+      <button type="button" aria-label="Punto decimal" onclick="agregar('.')">.</button>
+      <button type="button" class="btn-igual" aria-label="Calcular resultado" onclick="calcular()">=</button>
+    </div>
+  </div>
+
+  <script src="Calculadora.js"></script>
+</body>
+</html>
